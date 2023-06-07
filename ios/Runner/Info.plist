@@ -47,5 +47,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Permission options for the `reminder` group -->
+    <key>NSRemindersUsageDescription</key>
+    <string>reminders</string>
+	<!-- Permission options for the `reminder` group
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Permite guardar archivos en el almacenamiento del dispositivo.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Permite acceder al almacenamiento del dispositivo para guardar archivos.</string-->
 </dict>
 </plist>
