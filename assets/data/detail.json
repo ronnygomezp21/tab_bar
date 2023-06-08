@@ -1,0 +1,14 @@
+{
+    "IdDocumentos": "wbVm1zv7F20oSCYAnEIIs79EJimiFiWNjVds6PnGgw4+GR5+5Xq6equ+DhwJ6VZ4TaA9tBcFCM5FvWyd8Ku2Jg==",
+    "NombreDocumento": "pruebaRevisar",
+    "FechaEmision": "2023-06-01 09:16:08",
+    "Estado": "FAC",
+    "Observaciones": "",
+    "DescripcionTipo": "Factura",
+    "RespetaOrden": "NO",
+    "procesoRealiza": {
+        "realizarProceso": false,
+        "firmar": false,
+        "revisar": true
+    }
+}

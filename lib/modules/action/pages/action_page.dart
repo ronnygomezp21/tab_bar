@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
-class TrazabilidadPage extends StatelessWidget {
-  const TrazabilidadPage({super.key});
+class ActionPage extends StatelessWidget {
+  const ActionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Trazabilidad'),
+      child: Text('Accion'),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tab_bar/pages/home_page.dart';
+import 'package:tab_bar/modules/home/pages/home_page.dart';
 
 void main() {
   runApp(const MyApp());
