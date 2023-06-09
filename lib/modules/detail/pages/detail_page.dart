@@ -29,7 +29,7 @@ class DetailPage extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: BounceInDown(
-                  from: 100,
+                  delay: Duration(milliseconds: 100 * index),
                   child: Card(
                     elevation: 3,
                     child: Column(

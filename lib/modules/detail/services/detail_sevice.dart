@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tab_bar/shared/models/detail.dart';
 
+
 class DetailService {
   Future<List<Detail>> getDetail() async {
     try {
