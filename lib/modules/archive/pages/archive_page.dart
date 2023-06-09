@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tab_bar/modules/pdf/pages/pdf_view_page.dart';
-import 'package:tab_bar/data/url.dart';
+import 'package:tab_bar/shared/data/url.dart';
 
 class ArchivePage extends StatelessWidget {
   const ArchivePage({super.key});

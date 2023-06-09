@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tab_bar/models/detail.dart';
+import 'package:tab_bar/shared/models/detail.dart';
 import 'package:tab_bar/modules/detail/services/detail_sevice.dart';
 
 class DetailPage extends StatelessWidget {
