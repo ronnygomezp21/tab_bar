@@ -37,8 +37,7 @@ class HomePage extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
-            //DetailPage(),
-            //ggghhg
+            DetailPage(),
             ArchivePage(),
             ActionPage(),
             TraceabilityPage(),

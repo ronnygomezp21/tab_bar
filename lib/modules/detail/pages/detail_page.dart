@@ -1,63 +1,126 @@
-// import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:tab_bar/models/detail.dart';
+import 'package:tab_bar/modules/detail/services/detail_sevice.dart';
 
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:tab_bar/models/detail.dart';
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key});
 
-// class DetailPage extends StatelessWidget {
-//   const DetailPage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    DetailService detailService = DetailService();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     Future<List<Detail>> getDetail() async {
-//       String jsonString =
-//           await rootBundle.loadString('assets/data/detail.json');
-//       final jsonResponse = json.decode(jsonString);
-//       final details = Detail.fromJson(jsonResponse);
-//       //return details.data;
-//     }
-
-//     return FutureBuilder<List<Detail>>(
-//       future: getDetail(),
-//       builder: (context, snapshot) {
-//         if (snapshot.hasData) {
-//           return ListView.builder(
-//             shrinkWrap: true,
-//             physics: const BouncingScrollPhysics(),
-//             itemCount: snapshot.data!.length,
-//             itemBuilder: (context, index) {
-//               final contact = snapshot.data![index];
-//               return Padding(
-//                 padding:
-//                     const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
-//                 child: Card(
-//                   color: Colors.white,
-//                   surfaceTintColor: Colors.white,
-//                   elevation: 2,
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(15),
-//                   ),
-//                   child: Row(
-//                     children: [
-                     
-//                       Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         mainAxisAlignment: MainAxisAlignment.start,
-//                         children: [
-                         
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               );
-//             },
-//           );
-//         } else if (snapshot.hasError) {
-//           return Center(child: Text(snapshot.error.toString()));
-//         }
-//         return const Center(child: CircularProgressIndicator());
-//       },
-//     );
-//   }
-// }
+    return FutureBuilder<List<Detail>>(
+      future: detailService.getDetail(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (BuildContext context, int index) {
+              final detail = snapshot.data![index];
+              final dateIssue = detail.fechaEmision;
+              DateTime dateTime = DateTime.parse(dateIssue.toString());
+              String date =
+                  "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: ListTile(
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Nombre del documento: ${detail.nombreDocumento}'),
+                        Text('Fecha de emision: $date'),
+                        Text('Estado: ${detail.estado}'),
+                        Text(
+                            'Observaciones: ${detail.observaciones == '' ? 'Sin observaciones' : detail.observaciones}'),
+                        const Text('Proceso realiza: '),
+                        Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FilledButton.icon(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          const Color.fromARGB(20, 0, 0, 0)),
+                                ),
+                                onPressed: null,
+                                icon: Icon(
+                                  detail.procesoRealiza.realizarProceso == true
+                                      ? Icons.check_circle_outline_rounded
+                                      : Icons.cancel_outlined,
+                                  color:
+                                      detail.procesoRealiza.realizarProceso ==
+                                              true
+                                          ? const Color(0xFF198754)
+                                          : const Color(0XFFdc3545),
+                                ),
+                                label: const Text(
+                                  'Realizar Proceso',
+                                  style: TextStyle(color: Colors.black87),
+                                ),
+                              ),
+                              FilledButton.icon(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          const Color.fromARGB(20, 0, 0, 0)),
+                                ),
+                                onPressed: null,
+                                icon: Icon(
+                                  detail.procesoRealiza.firmar == true
+                                      ? Icons.check_circle_outline_rounded
+                                      : Icons.cancel_outlined,
+                                  color: detail.procesoRealiza.firmar == true
+                                      ? const Color(0xFF198754)
+                                      : const Color(0XFFdc3545),
+                                ),
+                                label: const Text(
+                                  'Firmar',
+                                  style: TextStyle(color: Colors.black87),
+                                ),
+                              ),
+                              FilledButton.icon(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          const Color.fromARGB(20, 0, 0, 0)),
+                                ),
+                                onPressed: null,
+                                icon: Icon(
+                                  detail.procesoRealiza.revisar == true
+                                      ? Icons.check_circle_outline_rounded
+                                      : Icons.cancel_outlined,
+                                  color: detail.procesoRealiza.revisar == true
+                                      ? const Color(0xFF198754)
+                                      : const Color(0XFFdc3545),
+                                ),
+                                label: const Text(
+                                  'Revisar',
+                                  style: TextStyle(color: Colors.black87),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        }
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text('Error'),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+}

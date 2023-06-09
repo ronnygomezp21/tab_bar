@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-Detail detailFromJson(String str) => Detail.fromJson(json.decode(str));
+List<Detail> detailFromJson(String str) =>
+    List<Detail>.from(json.decode(str).map((x) => Detail.fromJson(x)));
 
-String detailToJson(Detail data) => json.encode(data.toJson());
+String detailToJson(List<Detail> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Detail {
   String idDocumentos;
