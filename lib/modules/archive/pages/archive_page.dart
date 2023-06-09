@@ -21,15 +21,17 @@ class ArchivePage extends StatelessWidget {
             Directory('/storage/emulated/0/Download');
         File file = File("${downloadsDirectory.path}/$fileName");
         await file.writeAsBytes(bytes.buffer.asUint8List());
-        print(file.path);
-        print(file.path.split('/').last);
-        print('android');
+        debugPrint(file.path);
+        debugPrint(file.path.split('/').last);
+        debugPrint('android');
         SnackBar snackBar = SnackBar(
           backgroundColor: Colors.green,
           content: Text('El archivo $fileName ha sido descargado.'),
           duration: const Duration(seconds: 3),
         );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
         return downloadsDirectory;
       } else {
         return await getDownloadsDirectory();

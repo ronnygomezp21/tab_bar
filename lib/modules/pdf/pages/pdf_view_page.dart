@@ -1,15 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
-import 'package:tab_bar/modules/archive/pages/archive_page.dart';
-import 'package:tab_bar/modules/detail/pages/detail_page.dart';
-import 'package:tab_bar/modules/home/pages/home_page.dart';
 
 class PdfViewPage extends StatefulWidget {
   const PdfViewPage({super.key, required this.url, required this.title});
@@ -73,33 +68,34 @@ class _PdfViewPageState extends State<PdfViewPage> {
               defaultPage: currentPage!,
               fitPolicy: FitPolicy.BOTH,
               preventLinkNavigation: false,
-              onRender: (_pages) {
+              onRender: (pagesCurrent) {
                 setState(() {
-                  pages = _pages;
+                  pages = pagesCurrent;
                   isReady = true;
-                  pageList = List<int>.generate(_pages!, (index) => index + 1);
+                  pageList =
+                      List<int>.generate(pagesCurrent!, (index) => index + 1);
                 });
               },
               onError: (error) {
                 setState(() {
                   errorMessage = error.toString();
                 });
-                print(error.toString());
+                debugPrint(error.toString());
               },
               onPageError: (page, error) {
                 setState(() {
                   errorMessage = '$page: ${error.toString()}';
                 });
-                print('$page: ${error.toString()}');
+                debugPrint('$page: ${error.toString()}');
               },
               onViewCreated: (PDFViewController pdfViewController) {
                 _controller.complete(pdfViewController);
               },
               onLinkHandler: (String? uri) {
-                print('goto uri: $uri');
+                debugPrint('goto uri: $uri');
               },
               onPageChanged: (int? page, int? total) {
-                print('page change: $page/$total');
+                debugPrint('page change: $page/$total');
                 setState(() {
                   currentPage = page;
                 });
