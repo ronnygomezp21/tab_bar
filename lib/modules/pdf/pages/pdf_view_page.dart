@@ -17,6 +17,10 @@ class PdfViewPage extends StatefulWidget {
 }
 
 class _PdfViewPageState extends State<PdfViewPage> {
+  //String? _private;
+  //get private => _private;
+  //set private(value) => _private = value;
+
   String? localPath;
   List<int>? pageList;
   final Completer<PDFViewController> _controller =
