@@ -41,6 +41,7 @@ dependencies:
   permission_handler: ^10.2.0
   intl: ^0.18.1
   open_filex: ^4.3.2
+  animate_do: ^3.0.2
 
 dev_dependencies:
   flutter_test:

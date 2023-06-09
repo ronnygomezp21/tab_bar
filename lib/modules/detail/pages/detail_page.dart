@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tab_bar/modules/detail/widgets/content_card.dart';
 import 'package:tab_bar/shared/models/detail.dart';
 import 'package:tab_bar/modules/detail/services/detail_sevice.dart';
+import 'package:animate_do/animate_do.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({super.key});
@@ -14,6 +16,8 @@ class DetailPage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
             itemCount: snapshot.data!.length,
             itemBuilder: (BuildContext context, int index) {
               final detail = snapshot.data![index];
@@ -22,87 +26,69 @@ class DetailPage extends StatelessWidget {
               String date =
                   "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
               return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: ListTile(
-                    subtitle: Column(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                child: BounceInDown(
+                  from: 100,
+                  child: Card(
+                    elevation: 3,
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Nombre del documento: ${detail.nombreDocumento}'),
-                        Text('Fecha de emision: $date'),
-                        Text('Estado: ${detail.estado}'),
-                        Text(
-                            'Observaciones: ${detail.observaciones == '' ? 'Sin observaciones' : detail.observaciones}'),
-                        const Text('Proceso realiza: '),
-                        Center(
+                        Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                            color: Colors.indigo,
+                          ),
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            detail.nombreDocumento,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              FilledButton.icon(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          const Color.fromARGB(20, 0, 0, 0)),
-                                ),
-                                onPressed: null,
-                                icon: Icon(
-                                  detail.procesoRealiza.realizarProceso == true
-                                      ? Icons.check_circle_outline_rounded
-                                      : Icons.cancel_outlined,
-                                  color:
-                                      detail.procesoRealiza.realizarProceso ==
-                                              true
-                                          ? const Color(0xFF198754)
-                                          : const Color(0XFFdc3545),
-                                ),
-                                label: const Text(
-                                  'Realizar Proceso',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
+                              ContentCardWidget(
+                                title: 'Fecha de Emisión:',
+                                subtitle: date,
                               ),
-                              FilledButton.icon(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          const Color.fromARGB(20, 0, 0, 0)),
-                                ),
-                                onPressed: null,
-                                icon: Icon(
-                                  detail.procesoRealiza.firmar == true
-                                      ? Icons.check_circle_outline_rounded
-                                      : Icons.cancel_outlined,
-                                  color: detail.procesoRealiza.firmar == true
-                                      ? const Color(0xFF198754)
-                                      : const Color(0XFFdc3545),
-                                ),
-                                label: const Text(
-                                  'Firmar',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
+                              const SizedBox(height: 8),
+                              ContentCardWidget(
+                                title: 'Tipo de Descripción:',
+                                subtitle: detail.descripcionTipo,
                               ),
-                              FilledButton.icon(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          const Color.fromARGB(20, 0, 0, 0)),
-                                ),
-                                onPressed: null,
-                                icon: Icon(
-                                  detail.procesoRealiza.revisar == true
-                                      ? Icons.check_circle_outline_rounded
-                                      : Icons.cancel_outlined,
-                                  color: detail.procesoRealiza.revisar == true
-                                      ? const Color(0xFF198754)
-                                      : const Color(0XFFdc3545),
-                                ),
-                                label: const Text(
-                                  'Revisar',
-                                  style: TextStyle(color: Colors.black87),
-                                ),
+                              const SizedBox(height: 8),
+                              ContentCardWidget(
+                                title: 'Estado:',
+                                subtitle: detail.estado,
                               ),
+                              const SizedBox(height: 8),
+                              ContentCardWidget(
+                                title: 'Respeta Orden:',
+                                subtitle: detail.respetaOrden,
+                              ),
+                              const SizedBox(height: 8),
+                              ContentCardWidget(
+                                title: 'Observaciones:',
+                                subtitle: detail.observaciones == ''
+                                    ? 'No hay observaciones'
+                                    : detail.observaciones,
+                              ),
+                              const SizedBox(height: 8)
                             ],
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),
