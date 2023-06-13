@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:intl/intl.dart';
 
 class PdfViewPage extends StatefulWidget {
   const PdfViewPage({super.key, required this.url, required this.title});
@@ -17,10 +17,6 @@ class PdfViewPage extends StatefulWidget {
 }
 
 class _PdfViewPageState extends State<PdfViewPage> {
-  //String? _private;
-  //get private => _private;
-  //set private(value) => _private = value;
-
   String? localPath;
   List<int>? pageList;
   final Completer<PDFViewController> _controller =
@@ -34,8 +30,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
     try {
       var bytes = base64Decode(widget.url);
       final output = await getTemporaryDirectory();
-      String timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-      String fileName = '$timestamp.pdf';
+      String fileName = 'data.pdf';
       File file = File("${output.path}/$fileName");
       await file.writeAsBytes(bytes.buffer.asUint8List());
       return file.path;
@@ -51,6 +46,8 @@ class _PdfViewPageState extends State<PdfViewPage> {
       setState(() {
         localPath = value;
       });
+    }).catchError((error) {
+      debugPrint(error.toString());
     });
   }
 
@@ -60,50 +57,53 @@ class _PdfViewPageState extends State<PdfViewPage> {
       appBar: AppBar(
         backgroundColor: Colors.indigo,
         centerTitle: true,
-        title: Text(widget.title),
+        title: BounceInLeft(child: Text(widget.title)),
       ),
+
       body: localPath != null
-          ? PDFView(
-              filePath: localPath!,
-              swipeHorizontal: true,
-              autoSpacing: false,
-              pageFling: true,
-              pageSnap: true,
-              defaultPage: currentPage!,
-              fitPolicy: FitPolicy.BOTH,
-              preventLinkNavigation: false,
-              onRender: (pagesCurrent) {
-                setState(() {
-                  pages = pagesCurrent;
-                  isReady = true;
-                  pageList =
-                      List<int>.generate(pagesCurrent!, (index) => index + 1);
-                });
-              },
-              onError: (error) {
-                setState(() {
-                  errorMessage = error.toString();
-                });
-                debugPrint(error.toString());
-              },
-              onPageError: (page, error) {
-                setState(() {
-                  errorMessage = '$page: ${error.toString()}';
-                });
-                debugPrint('$page: ${error.toString()}');
-              },
-              onViewCreated: (PDFViewController pdfViewController) {
-                _controller.complete(pdfViewController);
-              },
-              onLinkHandler: (String? uri) {
-                debugPrint('goto uri: $uri');
-              },
-              onPageChanged: (int? page, int? total) {
-                debugPrint('page change: $page/$total');
-                setState(() {
-                  currentPage = page;
-                });
-              },
+          ? BounceInDown(
+              child: PDFView(
+                filePath: localPath!,
+                swipeHorizontal: true,
+                autoSpacing: false,
+                pageFling: true,
+                pageSnap: true,
+                defaultPage: currentPage!,
+                fitPolicy: FitPolicy.BOTH,
+                preventLinkNavigation: false,
+                onRender: (pagesCurrent) {
+                  setState(() {
+                    pages = pagesCurrent;
+                    isReady = true;
+                    pageList =
+                        List<int>.generate(pagesCurrent!, (index) => index + 1);
+                  });
+                },
+                onError: (error) {
+                  setState(() {
+                    errorMessage = error.toString();
+                  });
+                  debugPrint(error.toString());
+                },
+                onPageError: (page, error) {
+                  setState(() {
+                    errorMessage = '$page: ${error.toString()}';
+                  });
+                  debugPrint('$page: ${error.toString()}');
+                },
+                onViewCreated: (PDFViewController pdfViewController) {
+                  _controller.complete(pdfViewController);
+                },
+                onLinkHandler: (String? uri) {
+                  debugPrint('goto uri: $uri');
+                },
+                onPageChanged: (int? page, int? total) {
+                  debugPrint('page change: $page/$total');
+                  setState(() {
+                    currentPage = page;
+                  });
+                },
+              ),
             )
           : const Center(
               child: CircularProgressIndicator(),
@@ -158,21 +158,16 @@ class _PdfViewPageState extends State<PdfViewPage> {
           ],
         ),
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
-      // floatingActionButton: Padding(
-      //   padding: const EdgeInsets.only(bottom: 635),
-      //   child: FloatingActionButton(
-      //     backgroundColor: const Color.fromARGB(25, 0, 0, 0),
-      //     shape:
-      //         RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-      //     elevation: 0,
-      //     onPressed: null,
-      //     child: Center(
-      //         child: Text(
-      //       '${currentPage! + 1} / $pages',
-      //       style: const TextStyle(fontSize: 10),
-      //     )),
-      //   ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.red,
+      //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      //   elevation: 0,
+      //   onPressed: null,
+      //   child: Center(
+      //       child: Text(
+      //     '${currentPage! + 1} / $pages',
+      //     style: const TextStyle(fontSize: 10),
+      //   )),
       // ),
     );
   }

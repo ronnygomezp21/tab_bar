@@ -4,22 +4,46 @@ import 'package:tab_bar/shared/models/detail.dart';
 import 'package:tab_bar/modules/detail/services/detail_sevice.dart';
 import 'package:animate_do/animate_do.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    DetailService detailService = DetailService();
+  State<DetailPage> createState() => _DetailPageState();
+}
 
+class _DetailPageState extends State<DetailPage> {
+  DetailService detailService = DetailService();
+
+  @override
+  void initState() {
+    super.initState();
+    // detailService
+    //     .getDetail()
+    //     .then((value) => debugPrint(value.toString()))
+    //     .catchError((error) => debugPrint(error.toString()));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder<List<Detail>>(
       future: detailService.getDetail(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          final error = snapshot.error.toString();
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            child: Text(error, style: const TextStyle(color: Colors.red)),
+          );
+        } else if (snapshot.hasData) {
           return ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             itemCount: snapshot.data!.length,
-            itemBuilder: (BuildContext context, int index) {
+            itemBuilder: (context, index) {
               final detail = snapshot.data![index];
               final dateIssue = detail.fechaEmision;
               DateTime dateTime = DateTime.parse(dateIssue.toString());
@@ -96,14 +120,9 @@ class DetailPage extends StatelessWidget {
               );
             },
           );
-        }
-        if (snapshot.hasError) {
-          return const Center(
-            child: Text('Error'),
-          );
         } else {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: Text('No se encontraron detalles'),
           );
         }
       },

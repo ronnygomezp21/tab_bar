@@ -1,20 +1,18 @@
 import 'dart:convert';
 
-List<Detail> detailFromJson(String str) =>
-    List<Detail>.from(json.decode(str).map((x) => Detail.fromJson(x)));
+Detail detailFromJson(String str) => Detail.fromJson(json.decode(str));
 
-String detailToJson(List<Detail> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String detailToJson(Detail data) => json.encode(data.toJson());
 
 class Detail {
-  String idDocumentos;
-  String nombreDocumento;
-  DateTime fechaEmision;
-  String estado;
-  String observaciones;
-  String descripcionTipo;
-  String respetaOrden;
-  ProcesoRealiza procesoRealiza;
+  final String idDocumentos;
+  final String nombreDocumento;
+  final DateTime fechaEmision;
+  final String estado;
+  final String observaciones;
+  final String descripcionTipo;
+  final String respetaOrden;
+  final ProcesoRealiza procesoRealiza;
 
   Detail({
     required this.idDocumentos,
@@ -51,9 +49,9 @@ class Detail {
 }
 
 class ProcesoRealiza {
-  bool realizarProceso;
-  bool firmar;
-  bool revisar;
+  final bool realizarProceso;
+  final bool firmar;
+  final bool revisar;
 
   ProcesoRealiza({
     required this.realizarProceso,

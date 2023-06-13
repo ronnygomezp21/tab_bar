@@ -1,18 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:tab_bar/shared/models/detail.dart';
 
-
 class DetailService {
   Future<List<Detail>> getDetail() async {
-    try {
-      final String response =
-          await rootBundle.loadString('assets/data/detail.json');
-      List<Detail> detailList = detailFromJson(response);
-      return detailList;
-    } catch (error) {
-      debugPrint('Error al obtener los detalles: $error');
-      return [];
-    }
+    const String url = 'assets/data/detail.json';
+    final response = await rootBundle.loadString(url);
+    final jsonData = jsonDecode(response);
+    final details = Detail.fromJson(jsonData);
+    return [details];
   }
 }
